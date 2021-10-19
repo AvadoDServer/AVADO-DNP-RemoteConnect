@@ -1,0 +1,72 @@
+{
+  "0.0.5": {
+    "hash": "/ipfs/Qmdy4jWEXQxY3E2DRsjBLhwW2uQ8GHqohpVmeiKoWbW1om",
+    "type": "manifest",
+    "uploadedTo": {
+      "dappnode": "Thu, 07 Oct 2021 20:33:07 GMT"
+    }
+  },
+  "0.0.6": {
+    "hash": "/ipfs/QmWbveUPJvaiZrzaJeEtreDdkRxCbaNB6Wpt3NsMKKw2qQ",
+    "type": "manifest",
+    "uploadedTo": {
+      "dappnode": "Thu, 07 Oct 2021 22:16:35 GMT"
+    }
+  },
+  "0.0.7": {
+    "hash": "/ipfs/QmVRcBNtC8Uqas3SGwNGrmsh21kuCmf9fpuMrgLqnTruj5",
+    "type": "manifest",
+    "uploadedTo": {
+      "dappnode": "Thu, 07 Oct 2021 22:22:36 GMT"
+    }
+  },
+  "0.0.8": {
+    "hash": "/ipfs/Qmf51WqTc5pgYjYpVGp1RDQRMzB4PfA3i853hFWJEgM74g",
+    "type": "manifest",
+    "uploadedTo": {
+      "dappnode": "Thu, 07 Oct 2021 22:27:22 GMT"
+    }
+  },
+  "0.0.9": {
+    "hash": "/ipfs/QmZ9KkxHfvxz7R5LqnzYpB2XBcaCksxkwwQj6BY7hwB9ix",
+    "type": "manifest",
+    "uploadedTo": {
+      "dappnode": "Thu, 07 Oct 2021 22:43:01 GMT"
+    }
+  },
+  "0.0.10": {
+    "hash": "/ipfs/QmNp6Qr5RkWLwbARC7aPpBXSWp28A6BCwyuQPCqhc8PAEj",
+    "type": "manifest",
+    "uploadedTo": {
+      "dappnode": "Thu, 07 Oct 2021 23:34:45 GMT"
+    }
+  },
+  "0.0.11": {
+    "hash": "/ipfs/QmeNiyhrPVUuJkWATiMfdrYvoHugsCYcXGxZqWWZbdTuuM",
+    "type": "manifest",
+    "uploadedTo": {
+      "dappnode": "Thu, 07 Oct 2021 23:42:48 GMT"
+    }
+  },
+  "0.0.16": {
+    "hash": "/ipfs/QmSRTKxRURKzvp7TjCLuHrR8A5C4mFWK9Ly7zcEPkNxM91",
+    "type": "manifest",
+    "uploadedTo": {
+      "http://80.208.229.228:5001": "Mon, 18 Oct 2021 14:08:31 GMT"
+    }
+  },
+  "0.0.17": {
+    "hash": "/ipfs/QmX9PJydWwSyyh1BLA6KqBjk7kwwiRuk6cZ2bz11NogmEX",
+    "type": "manifest",
+    "uploadedTo": {
+      "http://80.208.229.228:5001": "Mon, 18 Oct 2021 19:10:19 GMT"
+    }
+  },
+  "0.0.18": {
+    "hash": "/ipfs/QmcqE8Crx35QX3WNqvTm4mBiN1jm3ZkBu69Caen3vdZjdb",
+    "type": "manifest",
+    "uploadedTo": {
+      "http://80.208.229.228:5001": "Mon, 18 Oct 2021 21:27:41 GMT"
+    }
+  }
+}

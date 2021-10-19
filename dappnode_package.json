@@ -1,0 +1,25 @@
+{
+  "name": "avado-zt-client.public.dappnode.eth",
+  "version": "0.0.18",
+  "title": "AVADO remote access",
+  "description": "AVADO remote access package",
+  "autoupdate": true,
+  "avatar": "/ipfs/QmbaQUvnti4pr7Ae9puKix1rvPHFdu4dqVrNYtPvcN6T8R",
+  "type": "library",
+  "image": {
+    "path": "avado-zt-client.public.dappnode.eth_0.0.18.tar.xz",
+    "hash": "/ipfs/QmNoFpBaq8TcYMABB7s9CzgE1UFLC3hf88RVeM4ecCUxr3",
+    "size": 35862848,
+    "environment": [
+      "NETWORK_ID=1d7193940437440b"
+    ],
+    "ports": [],
+    "volumes": [
+      "zt-data:/var/lib/zerotier-one",
+      "data:/data"
+    ]
+  },
+  "author": "AVADO",
+  "license": "MIT",
+  "builddate": "2021-10-18T21:27:41.042Z"
+}

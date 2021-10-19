@@ -1,0 +1,29 @@
+version: '3.4'
+services:
+  avado-zt-client.public.dappnode.eth:
+    image: 'avado-zt-client.public.dappnode.eth:0.0.18'
+    build: ./build
+    volumes:
+      - 'zt-data:/var/lib/zerotier-one'
+      - 'data:/data'
+    devices:
+      - /dev/net/tun
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    privileged: true
+    restart: always
+    logging:
+      options:
+        max-size: 10m
+        max-file: '3'
+    dns: 172.30.0.2
+    networks:
+      avado:
+        ipv4_address: 172.30.0.20
+volumes:
+  data: {}
+  zt-data: {}
+networks:
+  avado:
+    external: true
