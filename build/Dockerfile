@@ -41,7 +41,7 @@ FROM ${ALPINE_IMAGE}:${ALPINE_VERSION} as builder
 
 ARG ZT_COMMIT
 
-RUN apk add --update alpine-sdk linux-headers \
+RUN apk add --update alpine-sdk linux-headers iptables\
   && git clone --quiet https://github.com/zerotier/ZeroTierOne.git /src \
   && git -C src reset --quiet --hard ${ZT_COMMIT} \
   && cd /src \
@@ -69,7 +69,7 @@ FROM ${ALPINE_IMAGE}:${ALPINE_VERSION}
 
 COPY --from=builder /src/zerotier-one /usr/sbin/
 
-RUN apk add --no-cache --purge --clean-protected --update libc6-compat libstdc++ supervisor nodejs bash \
+RUN apk add --no-cache --purge --clean-protected --update libc6-compat libstdc++ supervisor nodejs bash iptables \
   && mkdir -p /var/lib/zerotier-one \
   && ln -s /usr/sbin/zerotier-one /usr/sbin/zerotier-idtool \
   && ln -s /usr/sbin/zerotier-one /usr/sbin/zerotier-cli \

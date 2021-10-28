@@ -32,6 +32,11 @@ do
   sleep 5
 done
 
+
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+iptables -A FORWARD -i eth0 -o $ZTDEV -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i $ZTDEV -o eth0 -j ACCEPT
+
 # Create bridge between ZT and local network
 # ip link add name zt_bridge type bridge
 # ip link set zt_bridge up

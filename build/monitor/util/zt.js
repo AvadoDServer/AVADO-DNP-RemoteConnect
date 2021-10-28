@@ -23,19 +23,19 @@ module.exports = (config) => {
                         allowDNS: true,
                         bridge: true,
                         dns: {
-                            servers: ["172.30.0.2"]
+                            servers: ["172.30.0.2"],
+			    domain: "dappnode.eth"
                         },
                         private: true,
                         ipAssignmentPools: [
                             {
-                                "ipRangeStart": "172.30.4.2",
-                                "ipRangeEnd": "172.30.4.254"
+                                "ipRangeStart": "10.10.10.3",
+                                "ipRangeEnd": "10.10.10.254"
                             }
                         ],
                         routes: [
-                            {
-                                "target": "172.30.0.0/22"   // lan
-                            }
+                            { "target": "10.10.10.0/24", "via": null }, 
+			    { "target": "172.30.0.0/22", "via": "10.10.10.2"}
                         ],
                         rules: [
                             {
@@ -56,7 +56,7 @@ module.exports = (config) => {
                         myZtAddress,
                         {
                             authorized: true,
-                            ipAssignments: ["172.30.4.1"]
+                            ipAssignments: ["10.10.10.2"]
                         }
                     );
                     console.log(`Added myself to ${mainNetworkId} res=${addMemberRes.status}`);
