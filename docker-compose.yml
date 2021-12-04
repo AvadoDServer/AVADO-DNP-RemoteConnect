@@ -1,7 +1,13 @@
 version: '3.4'
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.33.0.0/16
 services:
-  avado-zt-client.public.dappnode.eth:
-    image: 'avado-zt-client.public.dappnode.eth:0.0.18'
+  remoteconnect.avado.dnp.dappnode.eth:
+    image: 'remoteconnect.avado.dnp.dappnode.eth:0.0.22'
     build: ./build
     volumes:
       - 'zt-data:/var/lib/zerotier-one'
@@ -17,13 +23,10 @@ services:
       options:
         max-size: 10m
         max-file: '3'
-    dns: 172.30.0.2
+    dns: 172.33.0.2
     networks:
-      avado:
-        ipv4_address: 172.30.0.20
+      network:
+        ipv4_address: 172.33.1.20
 volumes:
   data: {}
   zt-data: {}
-networks:
-  avado:
-    external: true

@@ -37,39 +37,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -A FORWARD -i eth0 -o $ZTDEV -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i $ZTDEV -o eth0 -j ACCEPT
 
-# Create bridge between ZT and local network
-# ip link add name zt_bridge type bridge
-# ip link set zt_bridge up
-# ip link set eth0 up
-# ip link set $ZTDEV up
-
-# #
-# # add route rules
-# #  from file
-# #
-# if [ -e /opt/route.list ]
-# then
-#   echo "Route file found: /opt/route.list"
-#   cat /opt/route.list | while read line
-#   do  
-#     for routeline in "$( echo $line | grep -iv '^#' )"
-#     do
-#       # if empty line found - skip this loop
-#       [ -z "$routeline" ] && { continue; }
-
-#       ADDR="$( echo $routeline | cut -f1 -d',' | cut -f1 -d' ' )"
-#       GW="$( echo $routeline | cut -f2 -d',' | cut -f2 -d' '  )"
-#       if [ ! -z $ADDR ] && [ ! -z $GW ]
-#       then
-#         echo "adding route ... $ADDR via $GW"
-#         ip route add "$ADDR" via "$GW"
-#       fi
-#     done
-#   done
-#   ip route
-# fi
-
 echo "sleeping"
-sleep 9999
+while :; do sleep 2073600; done
 
 

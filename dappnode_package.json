@@ -1,25 +1,30 @@
 {
-  "name": "avado-zt-client.public.dappnode.eth",
-  "version": "0.0.18",
+  "name": "remoteconnect.avado.dnp.dappnode.eth",
+  "version": "0.0.22",
   "title": "AVADO remote access",
-  "description": "AVADO remote access package",
+  "description": "AVADO remote access",
   "autoupdate": true,
-  "avatar": "/ipfs/QmbaQUvnti4pr7Ae9puKix1rvPHFdu4dqVrNYtPvcN6T8R",
-  "type": "library",
+  "avatar": "/ipfs/QmVGThVBPAKPf7xnCXEZDY2pGv5CUTFEDxQdFvf7S6oqMd",
+  "type": "dncore",
   "image": {
-    "path": "avado-zt-client.public.dappnode.eth_0.0.18.tar.xz",
-    "hash": "/ipfs/QmNoFpBaq8TcYMABB7s9CzgE1UFLC3hf88RVeM4ecCUxr3",
-    "size": 35862848,
-    "environment": [
-      "NETWORK_ID=1d7193940437440b"
-    ],
+    "path": "remoteconnect.avado.dnp.dappnode.eth_0.0.22.tar.xz",
+    "hash": "/ipfs/QmX9G5HytV5h9TDr4FxDP8nqPhEZEeUTKHQXxADp3Meurf",
+    "size": 37644192,
+    "environment": [],
     "ports": [],
     "volumes": [
       "zt-data:/var/lib/zerotier-one",
       "data:/data"
-    ]
+    ],
+    "privileged": true,
+    "subnet": "172.33.0.0/16",
+    "ipv4_address": "172.33.1.20",
+    "restart": "always"
   },
   "author": "AVADO",
   "license": "MIT",
-  "builddate": "2021-10-18T21:27:41.042Z"
+  "links": {
+    "OnboardingWizard": "http://remoteconnect.my.ava.do"
+  },
+  "builddate": "2021-12-03T21:42:17.074Z"
 }
