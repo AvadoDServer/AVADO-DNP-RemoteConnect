@@ -38,13 +38,13 @@ class Service {
             // ...this.defaultOpts,
             // ...opts
         }
-        console.log(opts);
+        //console.log(opts);
         return axios.request(opts).then((r) => {
-            // console.log("axios received: ---", opts.url);
-            console.log(`result ${r.status}`);
+            // //console.log("axios received: ---", opts.url);
+            //console.log(`result ${r.status}`);
 
-            // console.log(r.status);
-            // console.log("---");
+            // //console.log(r.status);
+            // //console.log("---");
             return r
         })
     }
@@ -66,11 +66,11 @@ class Service {
             // ...this.defaultOpts,
             // ...opts
         }
-        console.log(opts);
+        //console.log(opts);
         return axios.request(opts).then((r) => {
-            // console.log("axios received: ---", opts.url);
-            console.log(`result ${r.status}`);
-            // console.log("---");
+            // //console.log("axios received: ---", opts.url);
+            //console.log(`result ${r.status}`);
+            // //console.log("---");
             return r
         })
     }
@@ -84,12 +84,12 @@ class Service {
             baseURL: `http://${this.defaultOpts.host}:${this.defaultOpts.port}`,
             headers: this.defaultOpts.headers
         }
-        console.log(opts);
+        //console.log(opts);
         return axios.request(opts).then((r) => {
-            // console.log("axios received: ---", opts.url); 
-            // console.log(r.status); 
-            console.log(`result ${r.status}`);
-            // console.log("---"); 
+            // //console.log("axios received: ---", opts.url); 
+            // //console.log(r.status); 
+            //console.log(`result ${r.status}`);
+            // //console.log("---"); 
             return r
         })
     }
@@ -108,7 +108,7 @@ class Service {
 
     createNetwork(controllerId, options, cb) {
         const address = `/controller/network/${controllerId}______`;
-        console.log("address", address);
+        //console.log("address", address);
         return this.post({
             path: address,
             body: options
@@ -156,9 +156,9 @@ class Service {
         return this.get({ path: '/status' }, cb)
     }
 
-    //   info (cb) {
-    //     return this.get({ path: '/info' }, cb)
-    //   }
+    info(cb) {
+        return this.get({ path: '/info' }, cb)
+    }
 
     //   peers (cb) {
     //     return this.get({ path: '/peer' }, cb)
@@ -185,7 +185,7 @@ class Service {
     //   }
 
     //   set (nwid, props, cb) {
-    //     console.log({ nwid, props });
+    //     //console.log({ nwid, props });
     //     assert(typeof nwid === 'string', 'Need a Network ID. got ' + nwid)
 
     //     assert(

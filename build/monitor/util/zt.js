@@ -23,8 +23,8 @@ module.exports = (config) => {
                         allowDNS: true,
                         bridge: true,
                         dns: {
-                            servers: ["172.30.0.2"],
-			    domain: "dappnode.eth"
+			                domain: "my.ava.do",
+                            servers: ["172.33.1.2"],
                         },
                         private: true,
                         ipAssignmentPools: [
@@ -35,7 +35,7 @@ module.exports = (config) => {
                         ],
                         routes: [
                             { "target": "10.10.10.0/24", "via": null }, 
-			    { "target": "172.30.0.0/22", "via": "10.10.10.2"}
+            			    { "target": "172.33.0.0/22", "via": "10.10.10.2"}
                         ],
                         rules: [
                             {

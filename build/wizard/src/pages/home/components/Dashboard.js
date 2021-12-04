@@ -1,129 +1,55 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import classNames from "classnames";
-import axios from "axios";
 import spinner from "../../../assets/spinner.svg";
-import QRCode from "react-qr-code";
-// import privateKeyToAddress from 'ethereum-private-key-to-address';
-// import getInstalledEthNode from "../../../util/getInstalledEthNode";
+import API from "../../../util/API";
+import CTE from "react-click-to-edit";
+import update from 'immutability-helper';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import downloadandroid from "../../../assets/download-android.svg";
+import downloadios from "../../../assets/download-ios.svg";
+import downloadmac from "../../../assets/download-mac.svg";
+import downloadwin from "../../../assets/download-win.svg";
+import ReactTooltip from 'react-tooltip';
 
-// const dcloudmonitorAPI = "" ;
-//const dcloudmonitorAPI ="http://my.avado-tornadocashrelayer.public.dappnode.eth:82";
+const baseurl = "https://download.zerotier.com/RELEASES/1.6.6/dist";
 
 const Comp = () => {
 
-    // const [ethNode, setEthNode] = React.useState(undefined);
-    // const [pubKey, setPubKey] = React.useState();
     const [showSpinner, setShowSpinner] = React.useState(true);
-    const [networkId, setNetworkId] = React.useState("12317235712635");
-    // const [currentEnv, setCurrentEnv] = React.useState(undefined);
-    const [currentView, setCurrentView] = React.useState("view");
-    // const [relayerStatus, setRelayerStatus] = React.useState();
-    // const [initialFormValues, setInitialFormValues] = React.useState({
-    //     RELAYER_FEE: 0.045,
-    //     PRIVATE_KEY: "",
-    //     NET_ID: 1,
-    //     REDIS_URL: "redis://127.0.0.1:6379",
-    //     APP_PORT: 8000,
-    // });
-
-    // const getEnv = () => {
-    //     setShowSpinner(true);
-    //     return new Promise((resolve, reject) => {
-    //         console.log("Polling config from container");
-    //         axios.get(`${dcloudmonitorAPI}/getenv`).then((res) => {
-    //             if (res && res.data) {
-    //                 setCurrentEnv(res.data);
-    //                 setShowSpinner(false);
-    //                 if (!res.data.PRIVATE_KEY) {
-    //                     setCurrentView("edit");
-    //                 }
-    //                 resolve(res.data);
-    //             }
-    //         }).catch(() => {
-    //             // reject();
-    //             resolve();
-    //         });
-    //     });
-    // };
-
-    // const setEnv = (vals) => {
-    //     setShowSpinner(true);
-    //     return axios.post(`${dcloudmonitorAPI}/setenv`, vals).then((res) => {
-    //         if (res && res.data) {
-    //             setCurrentEnv(res.data);
-
-    //             getServiceStatus("relayer").then((status) => {
-    //                 if (status.statename === "RUNNING") {
-    //                     console.log("Stopping service");
-    //                     stopService("relayer").then(() => {
-    //                         console.log("Starting service");
-    //                         startService("relayer");
-    //                     })
-    //                 }else{
-    //                     startService("relayer");
-    //                 }
-    //             })
-    //             setShowSpinner(false);
-    //         }
-    //     });
-    // };
-
-    // const getServiceStatus = (name) => {
-    //     return axios.get(`${dcloudmonitorAPI}/supervisord/status/${name}`).then((res) => {
-    //         setRelayerStatus(res.data);
-    //         return res.data;
-    //     });
-    // }
-
-    // const startService = (name) => {
-    //     return axios.get(`${dcloudmonitorAPI}/supervisord/start/${name}`).then(() => {
-    //         setTimeout(() => {
-    //             getServiceStatus(name);
-    //         }, 3 * 1000);
-    //     });
-    // }
-
-    // const stopService = (name) => {
-    //     return axios.get(`${dcloudmonitorAPI}/supervisord/stop/${name}`).then(() => {
-    //         setTimeout(() => {
-    //             getServiceStatus(name);
-    //         }, 3 * 1000);
-    //     });
-    // }
+    const [network, setNetwork] = React.useState();
+    const [networkMembers, setNetworkMembers] = React.useState();
+    const [copied, setCopied] = React.useState(false);
 
     React.useEffect(() => {
-       setShowSpinner(false);
+        setTimeout(() => {
+            setCopied(false);
+            ReactTooltip.rebuild()
+        }, 4000);
+        ReactTooltip.rebuild()
+    }, [copied]);
+
+    const fetchMembers = async () => {
+        const m = await API.networkMembers();
+        setNetworkMembers(m);
+    }
+
+    React.useEffect(() => {
+        let timer;
+        API.networkStatus().then((network) => {
+            setNetwork(network);
+            fetchMembers();
+            setShowSpinner(false);
+            if (network.networkid) {
+                timer = setInterval(async () => {
+                    fetchMembers();
+                }, 5000)
+            }
+        });
+
+        return (() => {
+            clearInterval(timer);
+        })
+
     }, []);
-
-
-    // Checkbox input
-    const Checkbox = ({
-        field: { name, value, onChange, onBlur },
-        form: { errors, touched, setFieldValue },
-        id,
-        label,
-        className,
-        ...props
-    }) => {
-        return (
-            <div>
-                <input
-                    name={name}
-                    id={id}
-                    type="checkbox"
-                    value={value}
-                    checked={value}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    className={classNames("radio-button", className)}
-                />
-                <label htmlFor={id}>{label}</label>
-                {/* {touched[name] && <InputFeedback error={errors[name]} />} */}
-            </div>
-        );
-    };
-
 
     if (showSpinner) {
         return (
@@ -142,324 +68,167 @@ const Comp = () => {
             </section>
         );
     }
+    const setAuth = (address, authorized) => {
 
-    // const serviceStatus = (name) => {
-    //     const logUrl = "http://my.avado/#/Packages/avado-tornadocashrelayer.public.dappnode.eth/detail"
-    //     if (!relayerStatus || relayerStatus.statename === "STOPPED") {
-    //         return (
-    //             <>
-    //                 <h3 className="is-size-3 has-text-white">Service status</h3>
+        // toggle UI immediately
+        const toggle = (address, authorized) => {
+            const i = networkMembers.findIndex((m) => { return m.address === address });
+            if (i !== -1) {
+                const member = networkMembers[i];
+                member.authorized = authorized;
+                const updatedNetworkMembers = update(networkMembers, { $splice: [[i, 1, member]] })
+                setNetworkMembers(updatedNetworkMembers);
+            }
+        }
 
-    //                 <section className="is-medium has-text-white">
-    //                     <div className="set_setting">
-    //                         <h3 className="is-size-5">Service is stopped</h3>
-    //                     </div>
-    //                     <button onClick={() => { startService("relayer") }} className="button is-medium is-success changebtn">Start</button>
-    //                 </section>
-    //                 <a target="_blank" href={logUrl}>Show logs</a>
-    //             </>
-    //         )
-    //     } else {
-    //         return (
-    //             <>
-    //                 <h3 className="is-size-3 has-text-white">Service status</h3>
+        console.log(`Toggle ${address}`);
+        if (authorized) {
+            API.networkAdd(address);
+            toggle(address, authorized);
+        } else {
+            API.networkRemove(address);
+            toggle(address, authorized);
+        }
+    }
 
-    //                 <section className="is-medium has-text-white">
-    //                     <div className="set_setting">
-    //                         <h3 className="is-size-5">Service is running</h3>
-
-    //                     </div>
-    //                     <button onClick={() => { stopService("relayer") }} className="button is-medium is-success changebtn">Stop service</button>
-    //                 </section>
-    //                 <a target="_blank" href={logUrl}>Show logs</a>
-    //             </>
-    //         )
-    //     }
-    // }
-
-
-    // const header = () => {
-    //     return (
-    //         <section className="is-medium has-text-white">
-    //             <div className="columns is-mobile">
-    //                 <div className="column is-8-desktop is-10">
-    //                     <h1 className="title is-1 is-spaced has-text-white">Tornadocash relayer</h1>
-    //                 </div>
-    //             </div>
-    //             <p className="">Relayer service for TornadoCash. You can use your own relayer - or provide relay service to other people through the AVADO RYO cloud.</p>
-    //         </section>
-    //     )
-    // }
+    const networkTable = () => {
+        if (!networkMembers) {
+            return null;
+        }
+        // the AVADO itself is also part of the network, since it's the network owner we don't want it to be managed.
+        // So filter it out
+        const externalMembers = networkMembers.filter((member) => { return member.address !== network.status.address })
+        const renderedMembers = externalMembers.length > 0 ? externalMembers.map((member) => {
 
             return (
-                <>
-           <section className="is-medium has-text-white">
-                 <div className="columns is-mobile">
-                     <div className="column is-8-desktop is-10">
-                         <h1 className="title is-1 is-spaced has-text-white">AVADO remote connection</h1>
-                     </div>
-                 </div>
-                 <p className="">You can connect to your AVADO remotely by using the ZeroTier tool.
-Downlaod a client for mobile or desktop and join this network
-</p>
-             </section>
-                    <h3 className="is-size-3 has-text-white">My AVADO network</h3>
-
-                    <section className="is-medium has-text-white">
-                    <div className="set_setting">
-                            <h3 className="is-size-5">{networkId}</h3>
-                            <QRCode value={networkId} />
-                        </div>
-                        <a onClick={() => { setCurrentView("edit"); }} className="button is-medium is-success changebtn">Change settings</a>
-                    </section>
-
-                    {/* {serviceStatus()} */}
-
-                </>
+                <tr key={member.address}>
+                    <td width="5%"><input type="checkbox" checked={member.authorized} onClick={() => { setAuth(member.address, !member.authorized) }} /></td>
+                    <td>{member.address}</td>
+                    <td>{member.authorized && member.ipAssignments && member.ipAssignments.length > 0 ? (<>yes</>) : (<>no</>)}</td>
+                    <td>
+                        <CTE
+                            inputClassName="has-text-white"
+                            initialValue={member.name}
+                            endEditing={async (value) => {
+                                await API.setName(member.address, { value });
+                                fetchMembers();
+                            }}
+                        />
+                    </td>
+                    {/* <td><pre>{JSON.stringify(member, 0, 2)}</pre></td> */}
+                </tr>
             );
+        }) : (
+            <tr><td colSpan="5">No members yet - please join this network to get your device listed here !</td></tr>
+        );
 
-//     if (currentView === "edit") {
-// console.log("Form: ethNode",ethNode);
-//         return (<>
+        return (
+            <div className="card-table">
+                <div className="content">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Allowed</th>
+                                <th>Node ID</th>
+                                <th>Connected</th>
+                                <th>Description</th>
+                                {/* <th>Qualification or relegation</th> */}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {renderedMembers}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-//             {header()}
+        )
+    }
 
-//             <Formik
-//                 enableReinitialize
-//                 initialValues={{
-//                     ...initialFormValues,
-//                     ...currentEnv,
-//                     RPC_URL: (currentEnv && currentEnv.RPC_URL) || ethNode,
-//                 }}
-//                 onSubmit={(values, { setSubmitting }) => {
-//                     setEnv({
-//                         ...values
-//                         , PUB_KEY: privateKeyToAddress(values.PRIVATE_KEY),
-//                         ORACLE_RPC_URL: values.RPC_URL
-//                     }).then(() => {
-//                         setSubmitting(false);
-//                         setCurrentView("view");
-//                     });
-//                 }}
-//                 validate={(values) => {
-//                     let errors = {};
+    return (
+        <>
+            <ReactTooltip />
+            <section className="is-medium has-text-white">
+                <div className="columns is-mobile">
+                    <div className="column is-8-desktop is-10">
+                        <h1 className="title is-1 is-spaced has-text-white">AVADO Remote connection</h1>
+                    </div>
+                </div>
 
-//                     if (!values.PRIVATE_KEY || values.PRIVATE_KEY.length !== 64) {
-//                         if (!values.PRIVATE_KEY) {
-//                             errors["PRIVATE_KEY"] = "This setting is required";
-//                         } else {
-//                             errors["PRIVATE_KEY"] = "not a valid private key";
-//                         }
-//                     } else {
-//                         setPubKey(privateKeyToAddress(values.PRIVATE_KEY));
-//                     }
-//                     if (!values.RELAYER_FEE) {
-//                         errors["RELAYER_FEE"] = "This setting is required";
-//                     }
-//                     if (!values.RPC_URL) {
-//                         errors["RPC_URL"] = "This setting is required";
-//                     }
+                <section className="is-medium has-text-white">
+                    <div className="set_setting">
+                        <h3 className="is-size-3 has-text-white">My AVADO network ID</h3>
+                        <h3 className="is-size-5 has-text-white">
+                            <CopyToClipboard key={network && network.networkid} text={network && network.networkid}
+                                onCopy={() => { setCopied(true) }}>
+                                {copied ?
+                                    (
+                                        <span className="has-text-white">{network && network.networkid}</span>
+                                    ) : (
+                                        <span data-tip={"click to copy"} className="has-text-white">{network && network.networkid}</span>
+                                    )}
+                            </CopyToClipboard>
+                        </h3>
+                    </div>
+                </section>
+                <section className="is-medium has-text-white">
+                    <div className="set_setting">
+                        <h3 className="is-size-3">Network members</h3>
+                        {networkTable() || (<>No members yet</>)}
+                    </div>
+                </section>
+                <br />
 
-//                     return errors;
-//                 }}
+                <h1 className="title is-1 is-spaced has-text-white">Setup instructions</h1>
 
-//             >
-//                 {props => {
-//                     const {
-//                         values,
-//                         touched,
-//                         errors,
-//                         dirty,
-//                         isSubmitting,
-//                         handleChange,
-//                         handleBlur,
-//                         handleSubmit,
-//                         handleReset,
-//                         setFieldValue,
-//                         submitForm
-//                     } = props;
-//                     return (
-//                         <>
-//                             <form onSubmit={handleSubmit}>
-//                                 <section className="is-medium has-text-white">
-//                                     <div className="">
-//                                         <div className="container">
-//                                             <div className="columns is-mobile">
-//                                                 <div className="column is-8-desktop is-10">
+                <h3 className="title is-4 is-spaced has-text-white">On your laptop/phone</h3>
+                <ol>
+                    <li>1. Download and install the ZeroTier client for your device</li>
+                    <li>
+                        <a href={`${baseurl}/ZeroTier%20One.msi`} target="_blank" title="Windows">
+                            <span className="icon is-large">
+                                <img src={downloadwin} />
+                            </span>
+                        </a>
+                        <a href={`${baseurl}/ZeroTier%20One.pkg`} target="_blank" title="Mac">
+                            <span className="icon is-large">
+                                <img src={downloadmac} />
+                            </span>
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.zerotier.one" target="_blank" title="Android">
+                            <span className="icon is-large">
+                                <img src={downloadandroid} />
+                            </span>
+                        </a>
+                        <a href="https://itunes.apple.com/us/app/zerotier-one/id1084101492?mt=8" target="_blank" title="iOS">
+                            <span className="icon is-large">
+                                <img src={downloadios} />
+                            </span>
+                        </a>
+                        <br />
+                    </li>
+                    <li>2. From the ZeroTier client - join the network <b>{network.networkid}</b> and check these checkboxes <b>Allow managed</b>, <b>"Allow DNS"</b> and <b>"Allow Global"</b></li>
+                </ol>
+                <br /><br />
+                <h3 className="title is-4 is-spaced has-text-white">On your AVADO</h3>
+                <ol>
+                    <li>3. Your device will show up in the member-list below after a few seconds (you can click the description to edit the name of the device)</li>
+                    <li>4. Check the checkbox to allow access from that device to your avado</li>
+                </ol>
+                <br /><br />
+                <h3 className="title is-4 is-spaced has-text-white">On your laptop/phone</h3>
+                <ol>
+                    <li>5. disconnect from the AVADO WiFi and connect back to your home WiFi</li>
+                    <li>6. wait until the client's status says <b>"OK"</b> (it might say "REQUESTING_CONFIGURATION" for a minute or so - just wait until this disappears)</li>
+                    <li>7. now try connecting to <a href="http://my.ava.do">http://my.ava.do</a> <b>"OK"</b></li>
+                </ol>
 
-//                                                     <div className="setting">
-//                                                         <h3 className="is-size-5">Ethereum node to use</h3>
-//                                                         <p>The URL of the Ethereum node to connect to. This should be your local node</p>
+            </section>
+            <br /><br />
 
-//                                                         <div className="field">
-//                                                             <p className="control">
+        </>
+    );
 
-//                                                                 <input
-//                                                                     id="RPC_URL"
-//                                                                     placeholder="ex. https://<url>:8545/"
-//                                                                     type="text"
-//                                                                     value={values.RPC_URL}
-//                                                                     onChange={handleChange}
-//                                                                     onBlur={handleBlur}
-//                                                                     className={
-//                                                                         errors.RPC_URL && touched.RPC_URL
-//                                                                             ? "input is-danger"
-//                                                                             : "input"
-//                                                                     }
-//                                                                 />
-
-//                                                                 {/* <input className="input" type="text" placeholder="Your Ethereum address" /> */}
-//                                                             </p>
-
-//                                                             {errors.RPC_URL && touched.RPC_URL && (
-//                                                                 <p className="help is-danger">{errors.RPC_URL}</p>
-//                                                             )}
-
-
-//                                                         </div>
-//                                                     </div>
-
-
-//                                                     <div className="setting">
-//                                                         <h3 className="is-size-5">Signing key</h3>
-//                                                         <p>Note: This key will be saved on your AVADO's disk. Make sure it does not contain a lot of crypto. Just enough ETH to pay for the relay transactions.</p>
-//                                                         <div className="field">
-//                                                             <p className="control">
-
-//                                                                 <input
-//                                                                     id="PRIVATE_KEY"
-//                                                                     placeholder="Private key"
-//                                                                     type="password"
-//                                                                     value={values.PRIVATE_KEY}
-//                                                                     onChange={handleChange}
-//                                                                     onBlur={handleBlur}
-//                                                                     className={
-//                                                                         errors.PRIVATE_KEY && touched.PRIVATE_KEY
-//                                                                             ? "input is-danger"
-//                                                                             : "input"
-//                                                                     }
-//                                                                 />
-//                                                             </p>
-//                                                             {pubKey && (<span>Pubkey:{pubKey}</span>)}
-//                                                             {errors.PRIVATE_KEY && touched.PRIVATE_KEY && (
-//                                                                 <p className="help is-danger">{errors.PRIVATE_KEY}</p>
-//                                                             )}
-
-//                                                         </div>
-//                                                     </div>
-
-
-//                                                     <div className="setting">
-//                                                         <h3 className="is-size-5">Relayer fee</h3>
-//                                                         <p>Please state what the desired fee would be for using your relayer</p>
-
-//                                                         <div className="field">
-//                                                             <p className="control">
-
-//                                                                 <input
-//                                                                     id="RELAYER_FEE"
-//                                                                     placeholder="Fee (ex 2.5 means 2.5% fee)"
-//                                                                     type="text"
-//                                                                     value={values.RELAYER_FEE}
-//                                                                     onChange={handleChange}
-//                                                                     onBlur={handleBlur}
-//                                                                     className={
-//                                                                         errors.RELAYER_FEE && touched.RELAYER_FEE
-//                                                                             ? "input is-danger"
-//                                                                             : "input"
-//                                                                     }
-//                                                                 />
-
-//                                                                 {/* <input className="input" type="text" placeholder="Your Ethereum address" /> */}
-//                                                             </p>
-
-//                                                             {errors.RELAYER_FEE && touched.RELAYER_FEE && (
-//                                                                 <p className="help is-danger">{errors.RELAYER_FEE}</p>
-//                                                             )}
-
-
-//                                                         </div>
-//                                                     </div>
-
-
-//                                                     {/* <div className="setting">
-//                                                             <h3 className="is-size-5">Enter your AVADO NFT address</h3>
-//                                                             <p>Please provide the public key of the NFT card in your AVADO box to participate in the reward pool. </p>
-//                                                             <div className="field">
-//                                                                 <p className="control">
-//                                                                     <input
-//                                                                         id="nftpubkey"
-//                                                                         placeholder="Your AVADO NFT address"
-//                                                                         type="text"
-//                                                                         value={values.nftpubkey}
-//                                                                         onChange={handleChange}
-//                                                                         onBlur={handleBlur}
-//                                                                         className={
-//                                                                             errors.nftpubkey && touched.nftpubkey
-//                                                                                 ? "input is-danger"
-//                                                                                 : "input"
-//                                                                         }
-//                                                                     />
-//                                                                 </p>
-//                                                                 {errors.nftpubkey && touched.nftpubkey && (
-//                                                                     <p className="help is-danger">{errors.nftpubkey}</p>
-//                                                                 )}
-//                                                             </div>
-//                                                         </div> */}
-
-
-//                                                     {/* <div className="setting">
-//                                                             <h3 className="is-size-5">Do you agree with the <a href="https://ava.do/ryo-terms-conditions/">Terms and Conditions of the AVADO RYO-Cloud</a></h3>
-//                                                             <nav className="level switch_w_options">
-//                                                                 <div className="level-left">
-
-//                                                                     <div className="level-item">
-//                                                                         <div className="field">
-
-//                                                                             <Field
-//                                                                                 component={Checkbox}
-//                                                                                 name="agreetandc"
-//                                                                                 id="agreetandc"
-//                                                                                 label={values.agreetandc ? "Yes" : "No"}
-//                                                                                 className="switch is-rounded is-link"
-//                                                                             />
-
-//                                                                         </div>
-//                                                                     </div>
-//                                                                 </div>
-//                                                             </nav>
-
-//                                                             {errors.agreetandc && touched.agreetandc && (
-//                                                                 <p className="help is-danger">{errors.agreetandc}</p>
-//                                                             )}
-
-//                                                         </div> */}
-
-
-//                                                     <div className="field is-grouped buttons">
-
-//                                                         <p className="control">
-//                                                             <a disabled={isSubmitting} onClick={() => { submitForm(); }} className="button is-medium is-success">Save and start package</a>
-//                                                         </p>
-//                                                     </div>
-//                                                 </div>
-//                                             </div>
-//                                         </div>
-//                                     </div>
-//                                 </section>
-//                             </form>
-
-//                         </>
-
-//                     );
-//                 }}
-//             </Formik>
-
-
-//         </>);
-//     }
-
-//     return null;
 };
 
 export default Comp;
