@@ -31,7 +31,8 @@ do
   IP_OK=$( ip addr show dev $ZTDEV | grep -i inet | wc -l )
   sleep 5
 done
-
+echo "My IP info"
+ip addr show dev $ZTDEV
 
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -A FORWARD -i eth0 -o $ZTDEV -m state --state RELATED,ESTABLISHED -j ACCEPT

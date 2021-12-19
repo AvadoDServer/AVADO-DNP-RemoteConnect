@@ -7,7 +7,7 @@ networks:
         - subnet: 172.33.0.0/16
 services:
   remoteconnect.avado.dnp.dappnode.eth:
-    image: 'remoteconnect.avado.dnp.dappnode.eth:0.0.23'
+    image: 'remoteconnect.avado.dnp.dappnode.eth:0.0.28'
     build: ./build
     volumes:
       - 'zt-data:/var/lib/zerotier-one'

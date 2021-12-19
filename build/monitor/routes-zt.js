@@ -1,5 +1,3 @@
-const random_name = require('node-random-name');
-
 module.exports = (server, config) => {
 
     const zt = require("./util/zt")(config);
@@ -17,17 +15,17 @@ module.exports = (server, config) => {
             const info = await config.ztController.info();
             console.log("ok rcvg status", status.data);
             const networkId = config.db.get("networkid");
+            const network = await config.ztController.getNetwork(networkId);
             let response = {
                 networkid: networkId,
+                network: network ? network.data : undefined,
                 status: status ? status.data : undefined,
                 info: info ? info.data : undefined,
             };
             res.send(200, response);
             return next();
-
         }, 0);
     });
-
 
     // allow nodeid access to this network
     server.get("/network/add/:nodeid", async (req, res, next) => {
@@ -122,6 +120,16 @@ module.exports = (server, config) => {
         }
     }
 
+    // set network name
+    server.post("/network/setname", async (req, res, next) => {
+        const networkId = config.db.get("networkid");
+        console.log(`Changing network ${networkId}'s name to ${req.body.name}`);
+        await config.ztController.postNetwork(networkId, { name: req.body.name });
+        res.send(200);
+        return next();    
+    });
+
+    // get list of members in this network
     server.get("/network/members", async (req, res, next) => {
         if (!config.db.get("networkid")) {
             res.send(400);

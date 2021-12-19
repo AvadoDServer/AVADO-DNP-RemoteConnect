@@ -17,11 +17,14 @@ const API = {
     networkDelete: async (address) => {
         return (await axios.get(`${packageAPI}/network/delete/${address}`)).data;
     },
-    setName: async (address,name) => {
-        await axios.post(`${packageAPI}/db/set/name_${address}`,name);
+    setNodeName: async (address, name) => {
+        await axios.post(`${packageAPI}/db/set/name_${address}`, name);
     },
-    getName: async (address,name) => {
-        return (await axios.get(`${packageAPI}/db/get/name_${address}`,name)).data;
+    getNodeName: async (address, name) => {
+        return (await axios.get(`${packageAPI}/db/get/name_${address}`, name)).data;
+    },
+    setNetworkName: async (name) => {
+        await axios.post(`${packageAPI}/network/setname`, { name });
     },
 }
 
