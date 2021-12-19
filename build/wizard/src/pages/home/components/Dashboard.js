@@ -234,7 +234,7 @@ const Comp = () => {
                 </section>
                 <br />
                 <div className="notification is-link">
-                    <p>If you're looking for the old VPN connection page - please go <a target="_top" href="http://my.avado/#/devices">here</a>.<br/>Please note that the VPN package will be removed in future versions</p>
+                    <p>If you're looking for the old VPN connection page - please go <a target="_top" href="http://my.ava.do/#/devices">here</a>.<br/>Please note that the VPN package will be removed in future versions</p>
                 </div>
                 {/* 
                 <h1 className="title is-1 is-spaced has-text-white">Setup instructions</h1>
