@@ -1,0 +1,25 @@
+.wrapper {
+  padding: 0 0.5ch;
+}
+
+.CTE--text {
+  color: white;
+  text-decoration: underline;
+}
+
+.CTE--input {
+  color: white;
+  text-decoration: none;
+}
+
+.no-lines.table td {
+  border:none;
+}
+
+.showonhover {
+  display:none;
+}
+/* 
+.hoverhider:hover + .showonhover {
+  display: block
+} */
