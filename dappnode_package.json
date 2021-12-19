@@ -1,15 +1,15 @@
 {
   "name": "remoteconnect.avado.dnp.dappnode.eth",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "title": "Remote Access",
   "description": "Remote Access",
   "autoupdate": true,
   "avatar": "/ipfs/Qma99egVdY8uHfiH7A9mSbBMHhVQijmrM8oH67KVCxxDke",
   "type": "dncore",
   "image": {
-    "path": "remoteconnect.avado.dnp.dappnode.eth_0.0.28.tar.xz",
-    "hash": "/ipfs/QmQ9gtVaVVdyRsUmFVm35DDUzYRfjB89NjnJmDZiWsoTY3",
-    "size": 35915952,
+    "path": "remoteconnect.avado.dnp.dappnode.eth_0.0.29.tar.xz",
+    "hash": "/ipfs/QmQtBNhrS987FfaMqGUxHvLzgbCBAef74assg5sc7Xrx1h",
+    "size": 37113456,
     "environment": [],
     "ports": [],
     "volumes": [
@@ -26,5 +26,5 @@
   "links": {
     "OnboardingWizard": "http://remoteconnect.my.ava.do"
   },
-  "builddate": "2021-12-19T16:12:25.381Z"
+  "builddate": "2021-12-19T21:59:00.248Z"
 }
