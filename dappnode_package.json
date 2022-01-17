@@ -8,8 +8,8 @@
   "type": "dncore",
   "image": {
     "path": "remoteconnect.avado.dnp.dappnode.eth_0.0.29.tar.xz",
-    "hash": "/ipfs/QmQtBNhrS987FfaMqGUxHvLzgbCBAef74assg5sc7Xrx1h",
-    "size": 37113456,
+    "hash": "/ipfs/QmbLrUazhG6TB9K5eLj9CyjTrqkQDohLGrBGLmVygHzFiM",
+    "size": 37119784,
     "environment": [],
     "ports": [],
     "volumes": [
@@ -26,5 +26,5 @@
   "links": {
     "OnboardingWizard": "http://remoteconnect.my.ava.do"
   },
-  "builddate": "2021-12-19T21:59:00.248Z"
+  "builddate": "2021-12-22T00:05:20.705Z"
 }
