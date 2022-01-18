@@ -1,0 +1,9 @@
+#!/bin/bash
+export NETWORK=`zerotier-cli listnetworks | tail -1 | cut -d" " -f3`
+
+if [ -z "$NETWORK" ]
+then
+	echo "No ZT network found"
+fi
+
+echo ${NETWORK}

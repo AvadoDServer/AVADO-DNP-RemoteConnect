@@ -51,9 +51,15 @@ COPY files/start.sh /opt/start.sh
 RUN chmod 755 /opt/start.sh
 COPY files/route.list /opt/route.list
 
+# commands to run from the host to add members on a headless machine
+COPY files/addmember /bin/addmember
+RUN chmod 755 /bin/addmember
+COPY files/getnetwork /bin/getnetwork
+RUN chmod 755 /bin/getnetwork
+
 # tunnel
-WORKDIR /usr/src/tunnel
-COPY files/tunnel.sh /tunnel.sh
-RUN chmod 755 /tunnel.sh
+#WORKDIR /usr/src/tunnel
+#COPY files/tunnel.sh /tunnel.sh
+#RUN chmod 755 /tunnel.sh
 
 ENTRYPOINT ["/opt/start.sh"]
