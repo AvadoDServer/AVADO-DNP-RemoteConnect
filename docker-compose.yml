@@ -12,8 +12,6 @@ services:
     volumes:
       - 'zt-data:/var/lib/zerotier-one'
       - 'data:/data'
-    ports:
-      - '22:22'
     devices:
       - /dev/net/tun
     cap_add:
