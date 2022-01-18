@@ -1,0 +1,41 @@
+#!/bin/bash
+export AUTH_TOKEN=`cat /data/authtoken.secret`
+export CLIENT=$1
+export NETWORK=`zerotier-cli listnetworks | tail -1 | cut -d" " -f3`
+export URL="http://127.0.0.1:9993/controller/network/${NETWORK}/member/${CLIENT}"
+generate_post_data()
+{
+ cat <<EOF
+{
+	"authorized": true
+}
+EOF
+}
+export DATA=$(generate_post_data)
+
+if [ -z "$CLIENT" ]
+then
+	echo "Please provide clientid to add"
+	exit 1
+fi
+
+if [ -z "$AUTH_TOKEN" ]
+then
+	echo "no auth token found"
+	exit 1
+fi
+
+if [ -z "$NETWORK" ]
+then
+	echo "No ZT network found"
+fi
+
+
+wget -O - \
+--header="Accept: application/json" \
+--header="Content-Type:application/json" \
+--header="X-ZT1-Auth:${AUTH_TOKEN}" \
+--post-data="${DATA}" \
+${URL} > /dev/null 2>&1
+
+echo "added ${CLIENT} to network ${NETWORK}"
