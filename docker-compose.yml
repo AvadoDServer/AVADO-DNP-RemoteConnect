@@ -7,6 +7,7 @@ networks:
         - subnet: 172.33.0.0/16
 services:
   remoteconnect.avado.dnp.dappnode.eth:
+    container_name: 'DAppNodeCore-remoteconnect.avado.dnp.dappnode.eth'
     image: 'remoteconnect.avado.dnp.dappnode.eth:0.0.30'
     build: ./build
     volumes:
