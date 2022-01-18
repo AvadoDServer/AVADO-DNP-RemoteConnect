@@ -1,9 +1,11 @@
 #!/bin/bash
-export NETWORK=`zerotier-cli listnetworks | tail -1 | cut -d" " -f3`
 
-if [ -z "$NETWORK" ]
-then
-	echo "No ZT network found"
-fi
+export NETWORK=`zerotier-cli listnetworks | grep -v "<nwid>" | cut -d" " -f3`
+
+while [ -z "$NETWORK" ]
+do
+  export NETWORK=`zerotier-cli listnetworks | grep -v "<nwid>" | cut -d" " -f3`
+  sleep 2
+done
 
 echo ${NETWORK}
