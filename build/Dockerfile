@@ -3,7 +3,7 @@ ARG ALPINE_VERSION=8.14.0-alpine
 ARG ZT_COMMIT=81de6d2dfa53f0fcdc10b6c22869349b89d466d2
 ARG ZT_VERSION=1.8.1
 
-FROM ${ALPINE_IMAGE}:${ALPINE_VERSION} as builder
+FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION} as builder
 
 ARG ZT_COMMIT
 
@@ -15,7 +15,7 @@ RUN apk add --update alpine-sdk linux-headers iptables\
 
 
 # build image for monitor & wizard
-FROM node:14-alpine as builder-nodejs
+FROM --platform=linux/amd64 node:16-alpine as builder-nodejs
 
 # build monitor
 WORKDIR /usr/src/monitor
@@ -32,7 +32,7 @@ RUN yarn
 RUN yarn build
 
 
-FROM ${ALPINE_IMAGE}:${ALPINE_VERSION}
+FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION}
 
 COPY --from=builder /src/zerotier-one /usr/sbin/
 
