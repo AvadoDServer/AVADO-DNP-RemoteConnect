@@ -38,6 +38,9 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -A FORWARD -i eth0 -o $ZTDEV -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i $ZTDEV -o eth0 -j ACCEPT
 
+# Allow SSH access through container
+iptables -t nat -A PREROUTING -p tcp --dport 22 -j DNAT --to-destination `/sbin/ip route|awk '/default/ { print $3 }'`:22
+
 echo "sleeping"
 while :; do sleep 2073600; done
 
