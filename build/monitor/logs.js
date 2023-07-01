@@ -23,7 +23,6 @@ const scFormat = winston.format.printf(info => {
   if (append != "{}") {
     message = `${message} - ${append}`;
   }
-  // return `${info.timestamp} ${level} [${info.label}] : ${message}`;
   return `${level} [${info.label}] : ${message}`;
 });
 

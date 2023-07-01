@@ -1,6 +1,6 @@
 {
   "name": "remoteconnect.avado.dnp.dappnode.eth",
-  "version": "0.0.31",
+  "version": "0.0.33",
   "title": "Remote Access",
   "description": "Remote Access",
   "autoupdate": true,

@@ -1,7 +1,7 @@
 ARG ALPINE_IMAGE=node
-ARG ALPINE_VERSION=8.14.0-alpine
-ARG ZT_COMMIT=81de6d2dfa53f0fcdc10b6c22869349b89d466d2
-ARG ZT_VERSION=1.8.1
+ARG ALPINE_VERSION=19.9.0-alpine3.16
+ARG ZT_COMMIT=a872cc341866f84f07fd58a5d26bcfdad6714174
+#ARG ZT_VERSION=1.10.6
 
 FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION} as builder
 
@@ -15,7 +15,8 @@ RUN apk add --update alpine-sdk linux-headers iptables\
 
 
 # build image for monitor & wizard
-FROM --platform=linux/amd64 node:16-alpine as builder-nodejs
+FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION} as builder-nodejs
+RUN apk add --no-cache --purge --clean-protected --update nodejs
 
 # build monitor
 WORKDIR /usr/src/monitor
@@ -56,10 +57,5 @@ COPY files/addmember /bin/addmember
 RUN chmod 755 /bin/addmember
 COPY files/getnetwork /bin/getnetwork
 RUN chmod 755 /bin/getnetwork
-
-# tunnel
-#WORKDIR /usr/src/tunnel
-#COPY files/tunnel.sh /tunnel.sh
-#RUN chmod 755 /tunnel.sh
 
 ENTRYPOINT ["/opt/start.sh"]

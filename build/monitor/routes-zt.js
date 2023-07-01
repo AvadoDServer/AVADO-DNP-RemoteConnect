@@ -7,7 +7,7 @@ module.exports = (server, config) => {
     // ************************************************************************
 
     // returns zerotier controller status & generic info about this client
-    server.get("/network/status", async (req, res, next) => {
+    server.get("/network/status", async (req, res) => {
         console.log("Get network status");
         setTimeout(async () => {
             console.log("fetch status");
@@ -22,20 +22,17 @@ module.exports = (server, config) => {
                 status: status ? status.data : undefined,
                 info: info ? info.data : undefined,
             };
-            res.send(200, response);
-            return next();
+            return res.send(200, response);
         }, 0);
     });
 
     // allow nodeid access to this network
-    server.get("/network/add/:nodeid", async (req, res, next) => {
+    server.get("/network/add/:nodeid", async (req, res) => {
         if (!config.db.get("networkid")) {
-            res.send(404);
-            return next();
+            return res.send(404);
         }
         if (!req.params.nodeid) {
-            res.send(400);
-            return next();
+            return res.send(400);
         }
 
         try {
@@ -46,23 +43,19 @@ module.exports = (server, config) => {
                     authorized: true,
                 }
             );
-            res.send(200, addMemberReply.data);
-            return next();
+            return res.send(200, addMemberReply.data);
         } catch (e) {
-            res.send(500, e.message);
-            return next();
+            return res.send(500, e.message);
         }
     });
 
     // disallow nodeid access to this network
-    server.get("/network/remove/:nodeid", async (req, res, next) => {
+    server.get("/network/remove/:nodeid", async (req, res) => {
         if (!config.db.get("networkid")) {
-            res.send(404);
-            return next();
+            return res.send(404);
         }
         if (!req.params.nodeid) {
-            res.send(400);
-            return next();
+            return res.send(400);
         }
         try {
             const removeMemberReply = await config.ztController.postMember(
@@ -72,33 +65,27 @@ module.exports = (server, config) => {
                     authorized: false,
                 }
             );
-            res.send(200, removeMemberReply.data);
-            return next();
+            return res.send(200, removeMemberReply.data);
         } catch (e) {
-            res.send(500, e.message);
-            return next();
+            return res.send(500, e.message);
         }
     });
 
     // delete nodeid from network altogether
-    server.get("/network/delete/:nodeid", async (req, res, next) => {
+    server.get("/network/delete/:nodeid", async (req, res) => {
         if (!config.db.get("networkid")) {
-            res.send(404);
-            return next();
+            return res.send(404);
         }
         if (!req.params.nodeid) {
-            res.send(400);
-            return next();
+            return res.send(400);
         }
 
         try {
             console.log(`Delete member ${req.params.nodeid} from ${config.db.get("networkid")}`)
             const deleteMemberReply = await config.ztController.deleteMember(config.db.get("networkid"), req.params.nodeid);
-            res.send(200, deleteMemberReply.data);
-            return next();
+            return res.send(200, deleteMemberReply.data);
         } catch (e) {
-            res.send(500, e.message);
-            return next();
+            return res.send(500, e.message);
         }
     });
 
@@ -121,25 +108,22 @@ module.exports = (server, config) => {
     }
 
     // set network name
-    server.post("/network/setname", async (req, res, next) => {
+    server.post("/network/setname", async (req, res) => {
         const networkId = config.db.get("networkid");
         console.log(`Changing network ${networkId}'s name to ${req.body.name}`);
         await config.ztController.postNetwork(networkId, { name: req.body.name });
-        res.send(200);
-        return next();    
+        return res.send(200);
     });
 
     // get list of members in this network
-    server.get("/network/members", async (req, res, next) => {
+    server.get("/network/members", async (req, res) => {
         if (!config.db.get("networkid")) {
-            res.send(400);
-            return next();
+            return res.send(400);
         }
         const members = await config.ztController.getMembers(config.db.get("networkid"));
         if (!members || !members.data) {
             console.log("No members found in this network.");
-            res.send(200);
-            return next();
+            return res.send(200);
         }
 
         const mi = Object.keys(members.data).map(async (member) => {
@@ -148,8 +132,7 @@ module.exports = (server, config) => {
         });
 
         Promise.all(mi).then((mir) => {
-            res.send(200, mir);
-            return next();
+            return res.send(200, mir);
         })
     });
 }
