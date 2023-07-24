@@ -35,27 +35,13 @@ class Service {
             url: opts.path,
             baseURL: `http://${this.defaultOpts.host}:${this.defaultOpts.port}`,
             headers: this.defaultOpts.headers
-            // ...this.defaultOpts,
-            // ...opts
         }
-        //console.log(opts);
         return axios.request(opts).then((r) => {
-            // //console.log("axios received: ---", opts.url);
-            //console.log(`result ${r.status}`);
-
-            // //console.log(r.status);
-            // //console.log("---");
             return r
         })
     }
 
     post(opts, cb) {
-        // opts = {
-        //     method: 'POST',
-        //     ...this.defaultOpts,
-        //     ...opts
-        // }
-        // return request(opts, cb)
         opts = {
             method: 'post',
             timeout: 2000,
@@ -63,14 +49,8 @@ class Service {
             baseURL: `http://${this.defaultOpts.host}:${this.defaultOpts.port}`,
             headers: this.defaultOpts.headers,
             data: opts.body
-            // ...this.defaultOpts,
-            // ...opts
         }
-        //console.log(opts);
         return axios.request(opts).then((r) => {
-            // //console.log("axios received: ---", opts.url);
-            //console.log(`result ${r.status}`);
-            // //console.log("---");
             return r
         })
     }
@@ -84,12 +64,7 @@ class Service {
             baseURL: `http://${this.defaultOpts.host}:${this.defaultOpts.port}`,
             headers: this.defaultOpts.headers
         }
-        //console.log(opts);
         return axios.request(opts).then((r) => {
-            // //console.log("axios received: ---", opts.url); 
-            // //console.log(r.status); 
-            //console.log(`result ${r.status}`);
-            // //console.log("---"); 
             return r
         })
     }
@@ -108,7 +83,6 @@ class Service {
 
     createNetwork(controllerId, options, cb) {
         const address = `/controller/network/${controllerId}______`;
-        //console.log("address", address);
         return this.post({
             path: address,
             body: options
@@ -159,56 +133,6 @@ class Service {
     info(cb) {
         return this.get({ path: '/info' }, cb)
     }
-
-    //   peers (cb) {
-    //     return this.get({ path: '/peer' }, cb)
-    //   }
-
-    //   networks (cb) {
-    //     return this.get({ path: '/network' }, cb)
-    //   }
-
-    //   network (nwid, cb) {
-    //     return this.get({ path: `/network/${nwid}` }, cb)
-    //   }
-
-    //   peer (nodeId, cb) {
-    //     return this.get({ path: `/peer/${nodeId}` }, cb)
-    //   }
-
-    //   join (nwid, cb) {
-    //     return this.post({ path: `/network/${nwid}` }, cb)
-    //   }
-
-    //   leave (nwid, cb) {
-    //     return this.delete({ path: `/network/${nwid}` }, cb)
-    //   }
-
-    //   set (nwid, props, cb) {
-    //     //console.log({ nwid, props });
-    //     assert(typeof nwid === 'string', 'Need a Network ID. got ' + nwid)
-
-    //     assert(
-    //       Object.keys(props).every(key =>
-    //         ztSettings.includes(key)
-    //       ),
-    //       'Allowed settings are: ' + ztSettings.join(', ')
-    //     )
-
-    //     props = Object.keys(props).reduce((acc, key) => {
-    //       return { [key]: props[key] }
-    //     }, {})
-
-    //     return this.post({ path: `/network/${nwid}`, body: props }, cb)
-    //   }
-
-
 }
 
-// const ztSettings = ['allowDefault', 'allowManaged', 'allowGlobal']
-
 module.exports = Service;
-
-// module.exports = function (opts) {
-//   return new Service(opts)
-// }

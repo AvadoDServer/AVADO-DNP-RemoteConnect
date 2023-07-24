@@ -2,7 +2,7 @@
 
 export NETWORK=`zerotier-cli listnetworks | grep -v "<nwid>" | cut -d" " -f3`
 
-while [ -z "$NETWORK" ]
+while [[ ! "$NETWORK" =~ ^[A-Fa-f0-9]{16}$ ]]
 do
   export NETWORK=`zerotier-cli listnetworks | grep -v "<nwid>" | cut -d" " -f3`
   sleep 2
