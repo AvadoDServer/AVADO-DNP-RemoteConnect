@@ -1,17 +1,17 @@
 ARG ALPINE_IMAGE=node
 ARG ALPINE_VERSION=19.9.0-alpine3.16
-ARG ZT_COMMIT=a872cc341866f84f07fd58a5d26bcfdad6714174
+# ARG ZT_COMMIT=a872cc341866f84f07fd58a5d26bcfdad6714174
 #ARG ZT_VERSION=1.10.6
 
-FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION} as builder
+# FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION} as builder
 
-ARG ZT_COMMIT
+# ARG ZT_COMMIT
 
-RUN apk add --update alpine-sdk linux-headers iptables\
-  && git clone --quiet https://github.com/zerotier/ZeroTierOne.git /src \
-  && git -C src reset --quiet --hard ${ZT_COMMIT} \
-  && cd /src \
-  && make -f make-linux.mk
+# RUN apk add --update alpine-sdk linux-headers iptables\
+#   && git clone --quiet https://github.com/zerotier/ZeroTierOne.git /src \
+#   && git -C src reset --quiet --hard ${ZT_COMMIT} \
+#   && cd /src \
+#   && make -f make-linux.mk
 
 
 # build image for monitor & wizard
@@ -33,14 +33,15 @@ RUN yarn
 RUN yarn build
 
 
-FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION}
+# FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION}
+FROM --platform=linux/amd64 zyclonite/zerotier
 
-COPY --from=builder /src/zerotier-one /usr/sbin/
+# COPY --from=builder /src/zerotier-one /usr/sbin/
 
 RUN apk add --no-cache --purge --clean-protected --update libc6-compat libstdc++ supervisor nodejs nginx bash iptables \
   && mkdir -p /var/lib/zerotier-one \
-  && ln -s /usr/sbin/zerotier-one /usr/sbin/zerotier-idtool \
-  && ln -s /usr/sbin/zerotier-one /usr/sbin/zerotier-cli \
+  # && ln -s /usr/sbin/zerotier-one /usr/sbin/zerotier-idtool \
+  # && ln -s /usr/sbin/zerotier-one /usr/sbin/zerotier-cli \
   && rm -rf /var/cache/apk/*
 
 COPY --from=builder-nodejs /usr/src/monitor /usr/monitor

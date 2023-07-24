@@ -65,18 +65,17 @@ iptables -A FORWARD -i $ZTDEV -o eth0 -j ACCEPT
 # Allow SSH access through container
 iptables -t nat -A PREROUTING -p tcp --dport 22 -j DNAT --to-destination `/sbin/ip route|awk '/default/ { print $3 }'`:22
 
-echo "sleeping"
-
 while :; do
-if [ -z `zerotier-cli info | grep ONLINE` ]; then
-  echo "Zerotier disconnected - restarting"
-  supervisorctl restart zerotier
-  echo "restarted zerotier"
-  sleep 10
-else
-  echo "Zerotier connected"
-fi
-sleep 300; 
+  if [[ -z $(zerotier-cli info | grep "ONLINE") ]]; then
+    echo "Zerotier disconnected - restarting"
+    supervisorctl restart zerotier
+    echo "restarted zerotier"
+    sleep 10
+  else
+    echo "Zerotier connected"
+  fi
+  echo "sleeping"
+  sleep 300; 
 done
 
 

@@ -192,7 +192,7 @@ const Comp = () => {
                         <h1 className="title is-1 is-spaced has-text-white">AVADO Remote connection</h1>
                     </div>
                 </div>
-                <p>Here you can configure your computer, tablet or phone to connect remotely to your AVADO - please read the <a target="_blank" rel="noopener noreferrer" href="https://wiki.ava.do/tutorials/remote-connect">instructions</a> first !</p>
+                <p>Here you can configure your computer, tablet or phone to connect remotely to your AVADO - please read the <a target="_blank" rel="noopener noreferrer" href="https://docs.ava.do/getting-started/remote-connect/">instructions</a> first !</p>
                 <br />
 
                 <section className="is-medium has-text-white">

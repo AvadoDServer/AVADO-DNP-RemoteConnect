@@ -1,3 +1,5 @@
+var errs = require('restify-errors');
+
 module.exports = (server, config) => {
 
     const zt = require("./util/zt")(config);
@@ -8,8 +10,8 @@ module.exports = (server, config) => {
 
     // returns zerotier controller status & generic info about this client
     server.get("/network/status", async (req, res) => {
-        console.log("Get network status");
-        setTimeout(async () => {
+        try {
+            console.log("Get network status");
             console.log("fetch status");
             const status = await config.ztController.status();
             const info = await config.ztController.info();
@@ -22,8 +24,10 @@ module.exports = (server, config) => {
                 status: status ? status.data : undefined,
                 info: info ? info.data : undefined,
             };
-            return res.send(200, response);
-        }, 0);
+            return res.send(response);
+        } catch (error) {
+            return res.send(500, e.message);
+        }
     });
 
     // allow nodeid access to this network
@@ -112,27 +116,32 @@ module.exports = (server, config) => {
         const networkId = config.db.get("networkid");
         console.log(`Changing network ${networkId}'s name to ${req.body.name}`);
         await config.ztController.postNetwork(networkId, { name: req.body.name });
-        return res.send(200);
+        return res.send();
     });
 
     // get list of members in this network
     server.get("/network/members", async (req, res) => {
         if (!config.db.get("networkid")) {
-            return res.send(400);
+            return next(new errs.BadRequestError("Cannot get network ID"));
         }
         const members = await config.ztController.getMembers(config.db.get("networkid"));
         if (!members || !members.data) {
             console.log("No members found in this network.");
-            return res.send(200);
+            // return next(new errs.BadRequestError("Cannot get network ID"));
+            return res.send();
         }
 
-        const mi = Object.keys(members.data).map(async (member) => {
-            const m = await memberInfo(member);
-            return m;
-        });
+        try {
+            const mi = await Promise.all(Object.keys(members.data).map(async (member) => {
+                console.log(`--- memberinfo ${member}`);
+                const m = await memberInfo(member);
+                return m;
+            }));
+            return res.send(mi);
+        } catch (error) {
+            console.error("An error occurred while processing members:", error);
+            return res.send(new InternalServerError("An error occurred while processing members"))
+        }
 
-        Promise.all(mi).then((mir) => {
-            return res.send(200, mir);
-        })
     });
 }

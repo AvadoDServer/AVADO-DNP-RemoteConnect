@@ -1,20 +1,19 @@
 {
   "dependencies": {
-    "@babel/helper-create-class-features-plugin": "^7.22.1",
+    "@babel/helper-create-class-features-plugin": "^7.22.9",
     "assert": "^2.0.0",
     "axios": "^1.4.0",
     "chokidar": "^3.5.3",
     "express": "^4.18.2",
     "nanorequest": "^5.0.0",
-    "node-random-name": "^1.0.1",
     "project-name-generator": "^2.1.9",
     "request": "^2.88.2",
     "restify": "^11.1.0",
-    "restify-cors-middleware": "^1.1.1",
+    "restify-cors-middleware2": "^2.2.1",
     "shelljs": "^0.8.5",
     "simple-json-db": "^2.0.0",
     "supervisord": "^0.1.0",
-    "winston": "^3.9.0",
+    "winston": "^3.10.0",
     "zerotier-service": "^0.3.1"
   }
 }
