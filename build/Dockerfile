@@ -34,7 +34,7 @@ RUN yarn build
 
 
 # FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION}
-FROM --platform=linux/amd64 zyclonite/zerotier
+FROM --platform=linux/amd64 zyclonite/zerotier:1.14.2
 
 # COPY --from=builder /src/zerotier-one /usr/sbin/
 

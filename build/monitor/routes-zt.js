@@ -14,19 +14,21 @@ module.exports = (server, config) => {
             console.log("Get network status");
             console.log("fetch status");
             const status = await config.ztController.status();
-            const info = await config.ztController.info();
+            // console.log("fetch info");
+            // const info = await config.ztController.info();
             console.log("ok rcvg status", status.data);
             const networkId = config.db.get("networkid");
             const network = await config.ztController.getNetwork(networkId);
+            console.log("got network data");
             let response = {
                 networkid: networkId,
                 network: network ? network.data : undefined,
                 status: status ? status.data : undefined,
-                info: info ? info.data : undefined,
+                // info: info ? info.data : undefined,
             };
             return res.send(response);
         } catch (error) {
-            return res.send(500, e.message);
+            return res.send(500, error.message);
         }
     });
 

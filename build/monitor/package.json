@@ -2,7 +2,7 @@
   "dependencies": {
     "@babel/helper-create-class-features-plugin": "^7.22.9",
     "assert": "^2.0.0",
-    "axios": "^1.4.0",
+    "axios": "^1.7.8",
     "chokidar": "^3.5.3",
     "express": "^4.18.2",
     "nanorequest": "^5.0.0",
