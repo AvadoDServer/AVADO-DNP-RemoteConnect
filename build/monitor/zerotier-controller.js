@@ -1,9 +1,11 @@
 var assert = require('assert')
 var request = require('nanorequest')
 const axios = require('axios');
+const http = require('http');
+
 
 class Service {
-    constructor({ authToken, host = '127.0.0.1', port = 9993 }) {
+    constructor({ authToken, host = 'localhost', port = 9993 }) {
         assert(
             typeof authToken === 'string',
             'We need an authToken to talk to the service.'
@@ -22,31 +24,80 @@ class Service {
             headers: this._headers
         }
 
+        this.authToken = authToken;
+
         this.controller = this.controller.bind(this)
         this.network = this.network.bind(this)
         this._status = this._status.bind(this)
 
     }
 
-    get(opts, cb) {
-        opts = {
-            method: 'get',
-            timeout: 2000,
-            url: opts.path,
-            baseURL: `http://${this.defaultOpts.host}:${this.defaultOpts.port}`,
-            headers: this.defaultOpts.headers
-        }
-        return axios.request(opts).then((r) => {
-            return r
-        })
+
+
+    get(opts) {
+        return new Promise((resolve, reject) => {
+            const options = {
+                hostname: this.defaultOpts.host,
+                port: this.defaultOpts.port,
+                path: opts.path,
+                method: 'GET',
+                headers: {
+                    'X-ZT1-AUTH': this.authToken, // Custom header
+                },
+            };
+            console.log(`GET request`, options);
+            const req = http.request(options, (res) => {
+                let data = '';
+
+                // Collect response data chunks
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+
+                // Handle end of response
+                res.on('end', () => {
+                    if (res.statusCode >= 200 && res.statusCode < 300) {
+                        console.log(`http fetch returns`, data);
+                        resolve({ data: JSON.parse(data) }); // Resolve with { data }
+                    } else {
+                        reject(
+                            new Error(
+                                `HTTP error! Status: ${res.statusCode}, Message: ${res.statusMessage}`
+                            )
+                        );
+                    }
+                });
+            });
+
+            // Handle errors
+            req.on('error', (error) => {
+                reject(new Error(`Request error: ${error.message}`));
+            });
+
+            // Finalize the request
+            req.end();
+        });
     }
+
+
+    // get(opts, cb) {
+    //     opts = {
+    //         method: 'get',
+    //         url: `http://${this.defaultOpts.host}:${this.defaultOpts.port}${opts.path}`,
+    //         headers: this.defaultOpts.headers
+    //     }
+    //     console.log(`get opts`, opts);
+    //     return axios.request(opts).then((r) => {
+    //         console.log(`get returns`, r);
+    //         return r
+    //     })
+    // }
 
     post(opts, cb) {
         opts = {
             method: 'post',
             timeout: 2000,
-            url: opts.path,
-            baseURL: `http://${this.defaultOpts.host}:${this.defaultOpts.port}`,
+            url: `http://${this.defaultOpts.host}:${this.defaultOpts.port}${opts.path}`,
             headers: this.defaultOpts.headers,
             data: opts.body
         }
@@ -60,8 +111,7 @@ class Service {
         opts = {
             method: 'delete',
             timeout: 2000,
-            url: opts.path,
-            baseURL: `http://${this.defaultOpts.host}:${this.defaultOpts.port}`,
+            url: `http://${this.defaultOpts.host}:${this.defaultOpts.port}${opts.path}`,
             headers: this.defaultOpts.headers
         }
         return axios.request(opts).then((r) => {
