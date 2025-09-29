@@ -8,7 +8,7 @@ networks:
 services:
   remoteconnect.avado.dnp.dappnode.eth:
     container_name: DAppNodeCore-remoteconnect.avado.dnp.dappnode.eth
-    image: 'remoteconnect.avado.dnp.dappnode.eth:0.0.49'
+    image: 'remoteconnect.avado.dnp.dappnode.eth:0.0.50'
     build: ./build
     volumes:
       - 'zt-data:/var/lib/zerotier-one'

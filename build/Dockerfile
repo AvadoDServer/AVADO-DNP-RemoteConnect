@@ -1,5 +1,5 @@
 ARG ALPINE_IMAGE=node
-ARG ALPINE_VERSION=19.9.0-alpine3.16
+ARG ALPINE_VERSION=20.0.0-alpine3.16
 # ARG ZT_COMMIT=a872cc341866f84f07fd58a5d26bcfdad6714174
 #ARG ZT_VERSION=1.10.6
 
@@ -34,7 +34,7 @@ RUN yarn build
 
 
 # FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION}
-FROM --platform=linux/amd64 zyclonite/zerotier:1.14.2
+FROM --platform=linux/amd64 zyclonite/zerotier:1.16.0
 
 # COPY --from=builder /src/zerotier-one /usr/sbin/
 
