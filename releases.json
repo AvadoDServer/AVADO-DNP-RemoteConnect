@@ -12,5 +12,12 @@
     "uploadedTo": {
       "http://80.208.229.228:35001": "Mon, 29 Sep 2025 22:05:00 GMT"
     }
+  },
+  "0.0.51": {
+    "hash": "/ipfs/QmeMSyVkqMoMsFzEHi4qPw4YST7P74ofWRS3s6miwSfw5J",
+    "type": "manifest",
+    "uploadedTo": {
+      "http://80.208.229.228:35001": "Tue, 30 Sep 2025 17:19:35 GMT"
+    }
   }
 }
