@@ -13,6 +13,11 @@
 # EOF
 # fi
 
+# As PID 1, bash ignores SIGTERM unless told otherwise, so every update of
+# this package waited the full docker stop timeout (180 s). Stop the services
+# and exit instead.
+trap 'supervisorctl shutdown >/dev/null 2>&1; exit 0' TERM INT
+
 rm -f /var/lib/zerotier-one/local.conf
 
 echo "Starting supervisord"
@@ -75,7 +80,9 @@ while :; do
     echo "Zerotier connected"
   fi
   echo "sleeping"
-  sleep 300; 
+  # In the background so the trap above can run while we wait
+  sleep 300 &
+  wait $!
 done
 
 
