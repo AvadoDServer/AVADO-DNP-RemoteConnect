@@ -77,12 +77,12 @@ const Comp = () => {
 
     if (showSpinner) {
         return (
-            <section className="is-medium has-text-white">
+            <section className="is-medium">
                 <div className="">
                     <div className="container">
                         <div className="columns is-mobile">
                             <div className="column is-8-desktop is-10 is-offset-1  has-text-centered">
-                                <p className="is-size-5 has-text-weight-bold">Loading</p>
+                                <p className="has-text-weight-semibold">Loading…</p>
                                 <div className="spacer"></div>
                                 <img alt="spinner" src={spinner} />
                             </div>
@@ -133,7 +133,7 @@ const Comp = () => {
 
                         <CTE
 
-                            inputClassName="has-text-white"
+                            inputClassName="input is-small"
                             initialValue={member.name}
                             endEditing={async (value) => {
                                 await API.setNodeName(member.address, { value });
@@ -148,14 +148,14 @@ const Comp = () => {
                             className="button is-small"
                             onClick={() => {
                                 API.networkDelete(member.address)
-                            }}><span>Delete</span><span className="icon is-small"><FontAwesomeIcon
+                            }}><span>Remove</span><span className="icon is-small"><FontAwesomeIcon
                                 icon={faTrash}
                             /></span></button>
                     </td>
                 </tr>
             );
         }) : (
-            <tr><td colSpan="5">No members yet - please join this network to get your device listed here !</td></tr>
+            <tr><td colSpan="5">No devices yet. Join this network from a device and it appears here within a few seconds.</td></tr>
         );
 
         return (
@@ -168,8 +168,8 @@ const Comp = () => {
                                 <th>Allowed</th>
                                 <th>Node ID</th>
                                 <th>Connected</th>
-                                <th>Description</th>
-                                <th>Commands</th>
+                                <th>Name</th>
+                                <th></th>
                                 {/* <th>Qualification or relegation</th> */}
                             </tr>
                         </thead>
@@ -186,22 +186,21 @@ const Comp = () => {
     return (
         <>
             <ReactTooltip />
-            <section className="is-medium has-text-white">
+            <section className="is-medium">
                 <div className="columns is-mobile">
                     <div className="column is-8-desktop is-10">
-                        <h1 className="title is-1 is-spaced has-text-white">AVADO Remote connection</h1>
+                        <h1 className="title">Remote Connect</h1>
                     </div>
                 </div>
-                <p>Here you can configure your computer, tablet or phone to connect remotely to your AVADO - please read the <a target="_blank" rel="noopener noreferrer" href="https://docs.ava.do/getting-started/remote-connect/">instructions</a> first !</p>
-                <br />
+                <p className="lead">Let your computer, tablet or phone reach this AVADO from anywhere. Read the <a target="_blank" rel="noopener noreferrer" href="https://docs.ava.do/getting-started/remote-connect/">setup instructions</a> first.</p>
 
-                <section className="is-medium has-text-white">
+                <section className="is-medium">
                     <div className="set_setting">
-                        <h3 className="is-size-3 has-text-white">My AVADO network</h3>
+                        <h3>My AVADO network</h3>
 
 
                         <table className="table no-lines">
-                            <tbody className="is-size-5 has-text-white">
+                            <tbody>
                                 <tr>
                                     <td>ID</td>
                                     <td>
@@ -226,10 +225,10 @@ const Comp = () => {
                         </table>
                     </div>
                 </section>
-                <section className="is-medium has-text-white">
+                <section className="is-medium">
                     <div className="set_setting">
-                        <h3 className="is-size-3">Network members</h3>
-                        {networkTable() || (<>No members yet</>)}
+                        <h3>Devices</h3>
+                        {networkTable() || (<>No devices yet</>)}
                     </div>
                 </section>
                 <br />
@@ -237,9 +236,9 @@ const Comp = () => {
                     <p>If you're looking for the old VPN connection page - please go <a target="_top" href="http://my.ava.do/#/devices">here</a>.<br/>Please note that the VPN package will be removed in future versions</p>
                 </div> */}
                 {/* 
-                <h1 className="title is-1 is-spaced has-text-white">Setup instructions</h1>
+                <h1 className="title is-1 is-spaced">Setup instructions</h1>
 
-                <h3 className="title is-4 is-spaced has-text-white">On your laptop/phone</h3>
+                <h3 className="title is-4 is-spaced">On your laptop/phone</h3>
                 <ol>
                     <li>1. Download and install the Remote Connect client for your device</li>
                     <li>
@@ -269,13 +268,13 @@ const Comp = () => {
                     <li>2. From the client - join the network <b>{network.networkid}</b> and check these checkboxes <b>Allow managed</b>, <b>"Allow DNS"</b> and <b>"Allow Global"</b></li>
                 </ol>
                 <br /><br />
-                <h3 className="title is-4 is-spaced has-text-white">On your AVADO</h3>
+                <h3 className="title is-4 is-spaced">On your AVADO</h3>
                 <ol>
                     <li>3. Your device will show up in the member-list below after a few seconds (you can click the description to edit the name of the device)</li>
                     <li>4. Check the checkbox to allow access from that device to your avado</li>
                 </ol>
                 <br /><br />
-                <h3 className="title is-4 is-spaced has-text-white">On your laptop/phone</h3>
+                <h3 className="title is-4 is-spaced">On your laptop/phone</h3>
                 <ol>
                     <li>5. disconnect from the AVADO WiFi and connect back to your home WiFi</li>
                     <li>6. wait until the client's status says <b>"OK"</b> (it might say "REQUESTING_CONFIGURATION" for a minute or so - just wait until this disappears)</li>

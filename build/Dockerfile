@@ -26,11 +26,13 @@ RUN npm i
 # build wizard
 WORKDIR /usr/src/wizard
 COPY wizard .
-RUN rm -Rf   node_modules
-RUN rm yarn.lock
-RUN yarn add react-scripts 
-RUN yarn 
-RUN yarn build
+RUN rm -Rf node_modules
+# Install exactly what yarn.lock pins. Deleting the lockfile and adding the
+# latest react-scripts made the build depend on whatever npm served that day
+# (it broke once sass started requiring a newer Node).
+RUN yarn install --frozen-lockfile --network-timeout 600000
+# react-scripts 3 (webpack 4) needs the legacy OpenSSL provider on Node >= 17
+RUN NODE_OPTIONS=--openssl-legacy-provider yarn build
 
 
 # FROM --platform=linux/amd64 ${ALPINE_IMAGE}:${ALPINE_VERSION}
